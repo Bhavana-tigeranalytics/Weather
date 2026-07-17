@@ -80,6 +80,10 @@ export default function SearchAndFavorites({ onCitySelect, selectedCity }: Searc
       setLoading(true);
       try {
         const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+        const contentType = res.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          throw new Error("Backend API not found. Express server is not running.");
+        }
         const data = await res.json();
         if (data && data.results) {
           setSuggestions(data.results);

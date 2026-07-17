@@ -64,6 +64,10 @@ export default function App() {
         localStorage.setItem("weather_last_searched", JSON.stringify(selectedCity));
 
         const res = await fetch(`/api/weather?lat=${selectedCity.latitude}&lon=${selectedCity.longitude}`);
+        const contentType = res.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          throw new Error("Backend API not found. If deployed to a static host (like Cloudflare Pages), the Express backend is not running. Please deploy to a container platform like Cloud Run.");
+        }
         if (!res.ok) {
           throw new Error("Unable to retrieve satellite weather indexes.");
         }
@@ -97,6 +101,11 @@ export default function App() {
         })
       });
 
+      const contentType = res.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        throw new Error("Backend API not found. If deployed to a static host (like Cloudflare Pages), the Express backend is not running.");
+      }
+
       if (!res.ok) {
         const errData = await res.json();
         throw new Error(errData.error || "Failed to draft recommendations");
@@ -118,6 +127,10 @@ export default function App() {
     setIsRefreshing(true);
     try {
       const res = await fetch(`/api/weather?lat=${selectedCity.latitude}&lon=${selectedCity.longitude}`);
+      const contentType = res.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        throw new Error("Backend API not found.");
+      }
       const data = await res.json();
       setWeatherData(data);
       await fetchAIRecommendations(selectedCity, data);

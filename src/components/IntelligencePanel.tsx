@@ -96,6 +96,11 @@ export default function IntelligencePanel({
         })
       });
 
+      const contentType = response.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        throw new Error("Backend API not found. Express server is not running.");
+      }
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || "Failed to communicate with AI");
