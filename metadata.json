@@ -1,0 +1,6 @@
+{
+  "name": "Weather Intelligence",
+  "description": "Smart, AI-powered weather forecasting, analytics, and personalized planning recommendations using Gemini AI.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
